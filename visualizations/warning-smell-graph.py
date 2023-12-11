@@ -9,26 +9,28 @@ pandas_vals = [0.0000790216, 0.0000959953, 0.0000413636, 0.0000500646, 0.0000464
 scikit_learn_vals = [0.0000336246, 0.0000338561, 0.0000316857, 0.0000323846, 0.0000319508, 0.0000271162, 0.0000258766, 0.0000236058, 0.0000206072, 0.0000195019, 0.0000192477]
 scrapy_vals = [0.0001541387, 0.0001471497, 0.0001628516, 0.0001307439, 0.0001588754, 0.0001444623, 0.0000614001, 0.0000660663, 0.0000607282, 0.0000591946, 0.0000537935]
 
-def calculate_percentage_change(data):
-    initial_value = data[0]
-    final_value = data[-1]
-    percentage_change = ((final_value - initial_value) / initial_value) * 100
-    return percentage_change
+# Z-score normalization
+celery_normalized = (np.array(celery) - np.mean(celery)) / np.std(celery)
+luigi_normalized = (np.array(luigi) - np.mean(luigi)) / np.std(luigi)
+matplotlib_normalized = (np.array(matplotlib_vals) - np.mean(matplotlib_vals)) / np.std(matplotlib_vals)
+numpy_normalized = (np.array(numpy_vals) - np.mean(numpy_vals)) / np.std(numpy_vals)
+pandas_normalized = (np.array(pandas_vals) - np.mean(pandas_vals)) / np.std(pandas_vals)
+scikit_learn_normalized = (np.array(scikit_learn_vals) - np.mean(scikit_learn_vals)) / np.std(scikit_learn_vals)
+scrapy_normalized = (np.array(scrapy_vals) - np.mean(scrapy_vals)) / np.std(scrapy_vals)
 
-# Data for each library
-celery_percentage_change = calculate_percentage_change(celery)
-luigi_percentage_change = calculate_percentage_change(luigi)
-matplotlib_percentage_change = calculate_percentage_change(matplotlib_vals)
-numpy_percentage_change = calculate_percentage_change(numpy_vals)
-pandas_percentage_change = calculate_percentage_change(pandas_vals)
-scikit_learn_percentage_change = calculate_percentage_change(scikit_learn_vals)
-scrapy_percentage_change = calculate_percentage_change(scrapy_vals)
+# Plot the graph
+plt.figure(figsize=(10, 6))
+plt.plot(years, celery_normalized, marker='o', label='Celery', linestyle='-')
+plt.plot(years, luigi_normalized, marker='s', label='Luigi', linestyle='-')
+plt.plot(years, matplotlib_normalized, marker='^', label='Matplotlib', linestyle='-')
+plt.plot(years, numpy_normalized, marker='v', label='NumPy', linestyle='-')
+plt.plot(years, pandas_normalized, marker='D', label='Pandas', linestyle='-')
+plt.plot(years, scikit_learn_normalized, marker='p', label='scikit-learn', linestyle='-')
+plt.plot(years, scrapy_normalized, marker='*', label='Scrapy', linestyle='-')
 
-# Print the calculated percentage changes
-print(f"Celery: {celery_percentage_change:.2f}% decrease")
-print(f"Luigi: {luigi_percentage_change:.2f}% decrease")
-print(f"Matplotlib: {matplotlib_percentage_change:.2f}% change")
-print(f"NumPy: {numpy_percentage_change:.2f}% change")
-print(f"Pandas: {pandas_percentage_change:.2f}% decrease")
-print(f"Scikit-learn: {scikit_learn_percentage_change:.2f}% decrease")
-print(f"Scrapy: {scrapy_percentage_change:.2f}% change")
+plt.title('Z-Score Normalized warning code smell Occurrences per LOC for Repositories (2013-2023)')
+plt.xlabel('Year')
+plt.ylabel('Z-Score Normalized Value')
+plt.legend()
+plt.grid(True)
+plt.show()
