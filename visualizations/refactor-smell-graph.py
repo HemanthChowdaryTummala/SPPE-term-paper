@@ -9,52 +9,29 @@ numpy_vals = [ 0.0000281420,0.0000320683 ,0.0000316493 ,0.0000301434 ,0.00002914
 pandas_vals = [0.0000417407,0.0000428530 ,0.0000182703 ,0.0000223627 , 0.0000209742, 0.0000157478, 0.0000091596,0.0000049561 ,0.0000043514 ,0.0000038855 ,0.0000036200  ]
 scikit_learn_vals = [0.0000167952, 0.0000169195, 0.0000158848, 0.0000154167, 0.0000152338, 0.0000129528, 0.0000118070, 0.0000102174, 0.0000085737, 0.0000083726, 0.0000079638]
 scrapy_vals = [0.0000743652, 0.0000766920, 0.0000775527, 0.0000587259, 0.0000767416, 0.0000757424, 0.0000447573, 0.0000484962, 0.0000445067, 0.0000387124, 0.0000342839]
-def calculate_percentage_change(data):
-    initial_value = data[0]
-    final_value = data[-1]
-    percentage_change = ((final_value - initial_value) / initial_value) * 100
-    return percentage_change
 
-# Data for each library
-celery_percentage_change = calculate_percentage_change(celery)
-luigi_percentage_change = calculate_percentage_change(luigi)
-matplotlib_percentage_change = calculate_percentage_change(matplotlib_vals)
-numpy_percentage_change = calculate_percentage_change(numpy_vals)
-pandas_percentage_change = calculate_percentage_change(pandas_vals)
-scikit_learn_percentage_change = calculate_percentage_change(scikit_learn_vals)
-scrapy_percentage_change = calculate_percentage_change(scrapy_vals)
+# Z-score normalization
+celery_normalized = (np.array(celery) - np.mean(celery)) / np.std(celery)
+luigi_normalized = (np.array(luigi) - np.mean(luigi)) / np.std(luigi)
+matplotlib_normalized = (np.array(matplotlib_vals) - np.mean(matplotlib_vals)) / np.std(matplotlib_vals)
+numpy_normalized = (np.array(numpy_vals) - np.mean(numpy_vals)) / np.std(numpy_vals)
+pandas_normalized = (np.array(pandas_vals) - np.mean(pandas_vals)) / np.std(pandas_vals)
+scikit_learn_normalized = (np.array(scikit_learn_vals) - np.mean(scikit_learn_vals)) / np.std(scikit_learn_vals)
+scrapy_normalized = (np.array(scrapy_vals) - np.mean(scrapy_vals)) / np.std(scrapy_vals)
 
-# Print the calculated percentage changes
-print(f"Celery: {celery_percentage_change:.2f}% decrease")
-print(f"Luigi: {luigi_percentage_change:.2f}% decrease")
-print(f"Matplotlib: {matplotlib_percentage_change:.2f}% change")
-print(f"NumPy: {numpy_percentage_change:.2f}% change")
-print(f"Pandas: {pandas_percentage_change:.2f}% decrease")
-print(f"Scikit-learn: {scikit_learn_percentage_change:.2f}% decrease")
-print(f"Scrapy: {scrapy_percentage_change:.2f}% change")
+# Plot the graph
+plt.figure(figsize=(10, 6))
+plt.plot(years, celery_normalized, marker='o', label='Celery', linestyle='-')
+plt.plot(years, luigi_normalized, marker='s', label='Luigi', linestyle='-')
+plt.plot(years, matplotlib_normalized, marker='^', label='Matplotlib', linestyle='-')
+plt.plot(years, numpy_normalized, marker='v', label='NumPy', linestyle='-')
+plt.plot(years, pandas_normalized, marker='D', label='Pandas', linestyle='-')
+plt.plot(years, scikit_learn_normalized, marker='p', label='scikit-learn', linestyle='-')
+plt.plot(years, scrapy_normalized, marker='*', label='Scrapy', linestyle='-')
 
-# # Z-score normalization
-# celery_normalized = (np.array(celery) - np.mean(celery)) / np.std(celery)
-# luigi_normalized = (np.array(luigi) - np.mean(luigi)) / np.std(luigi)
-# matplotlib_normalized = (np.array(matplotlib_vals) - np.mean(matplotlib_vals)) / np.std(matplotlib_vals)
-# numpy_normalized = (np.array(numpy_vals) - np.mean(numpy_vals)) / np.std(numpy_vals)
-# pandas_normalized = (np.array(pandas_vals) - np.mean(pandas_vals)) / np.std(pandas_vals)
-# scikit_learn_normalized = (np.array(scikit_learn_vals) - np.mean(scikit_learn_vals)) / np.std(scikit_learn_vals)
-# scrapy_normalized = (np.array(scrapy_vals) - np.mean(scrapy_vals)) / np.std(scrapy_vals)
-
-# # Plot the graph
-# plt.figure(figsize=(10, 6))
-# plt.plot(years, celery_normalized, marker='o', label='Celery', linestyle='-')
-# plt.plot(years, luigi_normalized, marker='s', label='Luigi', linestyle='-')
-# plt.plot(years, matplotlib_normalized, marker='^', label='Matplotlib', linestyle='-')
-# plt.plot(years, numpy_normalized, marker='v', label='NumPy', linestyle='-')
-# plt.plot(years, pandas_normalized, marker='D', label='Pandas', linestyle='-')
-# plt.plot(years, scikit_learn_normalized, marker='p', label='scikit-learn', linestyle='-')
-# plt.plot(years, scrapy_normalized, marker='*', label='Scrapy', linestyle='-')
-
-# plt.title('Z-Score Normalized refactor code smell Occurrences per LOC for Repositories (2013-2023)')
-# plt.xlabel('Year')
-# plt.ylabel('Z-Score Normalized Value')
-# plt.legend()
-# plt.grid(True)
-# plt.show()
+plt.title('Z-Score Normalized refactor code smell Occurrences per LOC for Repositories (2013-2023)')
+plt.xlabel('Year')
+plt.ylabel('Z-Score Normalized Value')
+plt.legend()
+plt.grid(True)
+plt.show()
